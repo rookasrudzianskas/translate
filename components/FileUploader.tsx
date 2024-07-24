@@ -6,7 +6,6 @@ import {CircleArrowDown, RocketIcon} from "lucide-react";
 
 const FileUploader = ({}) => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    // acceptedFiles is a FileList of File objects. List some properties.
     acceptedFiles.forEach((file) => {
       console.log(file.name);
       console.log(file.size);
