@@ -6,11 +6,7 @@ import {CircleArrowDown, RocketIcon} from "lucide-react";
 
 const FileUploader = ({}) => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    acceptedFiles.forEach((file) => {
-      console.log(file.name);
-      console.log(file.size);
-      console.log(file.type);
-    });
+    console.log(acceptedFiles);
   }, [])
   const {getRootProps, getInputProps, isDragActive, isFocused, isDragAccept} = useDropzone({onDrop})
 
