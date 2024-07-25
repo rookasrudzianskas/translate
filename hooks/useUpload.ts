@@ -39,9 +39,9 @@ const useUpload = ({}) => {
     }, (error) => {
       console.error("Error uploading file:", error);
     }, async () => {
-      setStatus(StatusText.UPLOADED);
+      setStatus(StatusText.UPLOADED as any);
       const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-      setStatus(StatusText.SAVING);
+      setStatus(StatusText.SAVING as any);
       await setDoc(doc(db, "users", user.id, "files", fileIdToUploadTo), {
         name: file.name,
         size: file.size,
@@ -50,7 +50,7 @@ const useUpload = ({}) => {
         ref: uploadTask.snapshot.ref.fullPath,
         createdAt: new Date(),
       });
-      setStatus(StatusText.GENERATING);
+      setStatus(StatusText.GENERATING as any);
       // Generate AI embeddings
 
       setFileId(fileIdToUploadTo);

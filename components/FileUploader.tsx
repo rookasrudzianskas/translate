@@ -1,11 +1,14 @@
 "use client";
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {useDropzone} from "react-dropzone";
 import {CircleArrowDown, RocketIcon} from "lucide-react";
+import {useRouter} from "next/navigation";
+import useUpload from "@/hooks/useUpload";
 
 const FileUploader = ({}) => {
   const  { progress, status, fileId, handleUpload } = useUpload();
+  const router = useRouter();
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
     if(file) {
@@ -14,6 +17,12 @@ const FileUploader = ({}) => {
       // nothing huge, just toast
     }
   }, []);
+
+  useEffect(() => {
+    if(fileId) {
+      router.push(`/dashboard/files/${fileId}`);
+    }
+  }, [fileId, router])
 
   const {getRootProps, getInputProps, isDragActive, isFocused, isDragAccept} = useDropzone(
     {
