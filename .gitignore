@@ -31,6 +31,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+/service_key.json
+.service_key.json
+service_key.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+!/service_key.json
