@@ -39,3 +39,4 @@ service_key.json
 *.tsbuildinfo
 next-env.d.ts
 !/service_key.json
+service_key.json
