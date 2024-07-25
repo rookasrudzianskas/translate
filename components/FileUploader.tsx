@@ -6,9 +6,23 @@ import {CircleArrowDown, RocketIcon} from "lucide-react";
 
 const FileUploader = ({}) => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    console.log(acceptedFiles);
-  }, [])
-  const {getRootProps, getInputProps, isDragActive, isFocused, isDragAccept} = useDropzone({onDrop})
+    const file = acceptedFiles[0];
+    if(file) {
+      // handle the upload function
+
+    } else {
+      // nothing huge, just toast
+    }
+  }, []);
+
+  const {getRootProps, getInputProps, isDragActive, isFocused, isDragAccept} = useDropzone(
+    {
+      onDrop,
+      maxFiles: 1,
+      accept: {
+        "application/pdf": [".pdf"]
+      },
+    });
 
   return (
     <div className={'flex flex-col gap-4 items-center max-w-7xl mx-auto'}>
