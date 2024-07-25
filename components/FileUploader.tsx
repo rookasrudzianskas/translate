@@ -5,11 +5,11 @@ import {useDropzone} from "react-dropzone";
 import {CircleArrowDown, RocketIcon} from "lucide-react";
 
 const FileUploader = ({}) => {
-  const onDrop = useCallback((acceptedFiles: File[]) => {
+  const  { progress, status, fileId, handleUpload } = useUpload();
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
     if(file) {
-      // handle the upload function
-
+      await handleUpload(file);
     } else {
       // nothing huge, just toast
     }
