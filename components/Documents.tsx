@@ -9,12 +9,7 @@ const Documents = async ({}) => {
   const { userId } = await auth();
   if(!userId) throw new Error('User not authenticated');
 
-  const documentsSnapshot = await
-    adminDb
-      .collection("users")
-      .doc(userId)
-      .collection("files")
-      .get();
+  const documentsSnapshot = await adminDb.collection('users').doc(userId).collection('files').get()
 
   return (
     <div className={'flex flex-wrap p-5 bg-gray-100 justify-center lg:justify-start rounded-sm gap-5 max-w-7xl' +
