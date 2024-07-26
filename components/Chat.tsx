@@ -41,6 +41,41 @@ const Chat = ({id}: { id: string }) => {
     e.preventDefault();
     if(!user) return;
 
+    const q = input;
+    setInput("");
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "human",
+        message: q,
+        createdAt: new Date(),
+      },
+      {
+        role: "ai",
+        message: "Thinking...",
+        createdAt: new Date(),
+      },
+    ]);
+
+    startTransition(async () => {
+      const { success, message } = await askQuestion(id, q);
+
+      if (!success) {
+        setMessages((prev) =>
+          prev.slice(0, prev.length - 1).concat([
+            {
+              role: "ai",
+              message: `Whoops! Something went wrong: ${message}`,
+              createdAt: new Date(),
+            },
+          ])
+        );
+      }
+    });
+
+
+
 
   }
 
