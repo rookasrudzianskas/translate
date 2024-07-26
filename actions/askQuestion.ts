@@ -3,6 +3,7 @@
 import {auth} from "@clerk/nextjs/server";
 import {adminDb} from "@/firebase-admin";
 import {Message} from "@/components/Chat";
+import {generateLangchainCompletion} from "@/lib/langchain";
 
 const FREE_LIMIT = 3;
 const PRO_LIMIT = 10;

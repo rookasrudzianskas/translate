@@ -8,9 +8,9 @@ import {RecursiveCharacterTextSplitter} from "@langchain/textsplitters";
 import {PDFLoader} from "@langchain/community/document_loaders/fs/pdf";
 import {AIMessage, HumanMessage} from "@langchain/core/messages";
 import {ChatPromptTemplate} from "@langchain/core/prompts";
-import {createHistoryAwareRetriever} from "langchain/dist/chains/history_aware_retriever";
-import {createStuffDocumentsChain} from "langchain/dist/chains/combine_documents";
-import {createRetrievalChain} from "langchain/dist/chains/retrieval";
+import { createHistoryAwareRetriever } from "langchain/chains/history_aware_retriever";
+import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
+import { createRetrievalChain } from "langchain/chains/retrieval";
 
 const model = new ChatOpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -205,3 +205,8 @@ const generateLangchainCompletion = async (docId: string, question: string) => {
 
   return reply.answer;
 };
+
+export {
+  model,
+  generateLangchainCompletion,
+}

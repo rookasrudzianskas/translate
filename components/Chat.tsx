@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useEffect, useState, useTransition} from 'react';
+import React, {useEffect, useRef, useState, useTransition} from 'react';
 import {useUser} from "@clerk/nextjs";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
@@ -8,6 +8,8 @@ import {Loader2Icon} from "lucide-react";
 import {useCollection} from "react-firebase-hooks/firestore";
 import {collection, orderBy, query} from "@firebase/firestore";
 import {db} from "@/firebase";
+import {askQuestion} from "@/actions/askQuestion";
+import ChatMessage from "@/components/ChatMessage";
 
 export type Message = {
   id?: string;
@@ -18,6 +20,7 @@ export type Message = {
 
 const Chat = ({id}: { id: string }) => {
   const { user } = useUser();
+  const bottomOfChatRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isPending, startTransition] = useTransition();
@@ -31,15 +34,37 @@ const Chat = ({id}: { id: string }) => {
   );
 
   useEffect(() => {
+    if(bottomOfChatRef.current) {
+      bottomOfChatRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
+  useEffect(() => {
     if(!snapshot) return;
     console.log("snapshot", snapshot);
     const lastMessage = messages.pop();
 
-  }, [snapshot])
+    if(lastMessage?.role === "ai" && lastMessage.message === "Thinking...") {
+      return;
+    }
+
+    const newMessages = snapshot.docs.map((doc) => {
+      const { role, message, createdAt } = doc.data();
+
+      return {
+        id: doc.id,
+        role,
+        message,
+        createdAt: createdAt.toDate(),
+      };
+
+      setMessages(newMessages);
+    });
+
+  }, [snapshot]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(!user) return;
 
     const q = input;
     setInput("");
@@ -73,16 +98,37 @@ const Chat = ({id}: { id: string }) => {
         );
       }
     });
-
-
-
-
   }
 
   return (
     <div className={'flex flex-col h-full overflow-scroll'}>
       <div className={'flex-1 w-full'}>
-        {}
+        {loading ? (
+          <div className={'flex items-center justify-center'}>
+            <Loader2Icon className={'animate-spin h-20 w-20 text-indigo-60 mt-20'} />
+          </div>
+        ) : (
+          <div>
+            {messages.length === 0 && (
+              <ChatMessage
+                key={'placeholder'}
+                message={{
+                  role: "ai",
+                  message: "Ask me anything about the document",
+                  createdAt: new Date(),
+                }}
+              />
+            )}
+            {messages.map((message, index) => (
+              <ChatMessage
+                key={index}
+                message={message}
+              />
+            ))}
+            <div  ref={bottomOfChatRef} />
+          </div>
+        )}
+
       </div>
       <form className={'flex sticky bottom-0 space-x-2 p-5 bg-indigo-600/75'}>
         <Input
