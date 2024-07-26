@@ -63,7 +63,7 @@ const Chat = ({id}: { id: string }) => {
 
   }, [snapshot]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     const q = input;
