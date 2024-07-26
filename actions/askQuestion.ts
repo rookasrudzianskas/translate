@@ -4,10 +4,7 @@ import { Message } from '@/components/Chat'
 import { generateLangchainCompletion } from '@/lib/langchain'
 import { auth } from '@clerk/nextjs/server'
 import {adminDb} from "@/firebase-admin";
-
-const FREE_LIMIT = 3
-const PRO_LIMIT = 100
-
+import {FREE_LIMIT, PRO_LIMIT} from "@/hooks/useSubscription";
 export async function askQuestion(id: string, question: string) {
 	auth().protect()
 
@@ -23,7 +20,19 @@ export async function askQuestion(id: string, question: string) {
 	const chatSnapshot = await chatRef.get()
 	const userMessages = chatSnapshot.docs.filter(
 		(doc) => doc.data().role === 'human'
-	)
+	);
+
+  const userRef = await adminDb.collection('users').doc(userId!).get();
+
+  if(!userRef.data()?.hasActiveMembership) {
+    if (userMessages.length >= FREE_LIMIT) {
+      return { success: false, message: 'You have reached the free limit of documents.' }
+    }
+  }
+
+  if(!userRef.data()?.hasActiveMembership && userMessages.length >= PRO_LIMIT) {
+    return { success: false, message: 'You have reached the pro limit of documents.' }
+  }
 
 	const userMessage: Message = {
 		role: 'human',

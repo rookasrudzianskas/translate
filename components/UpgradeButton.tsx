@@ -1,3 +1,5 @@
+"use client";
+
 import React, {useTransition} from 'react';
 import {Button} from "@/components/ui/button";
 import {Loader2Icon, StarIcon} from "lucide-react";

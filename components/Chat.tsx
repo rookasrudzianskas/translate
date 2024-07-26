@@ -10,6 +10,7 @@ import {collection, orderBy, query} from "@firebase/firestore";
 import {db} from "@/firebase";
 import {askQuestion} from "@/actions/askQuestion";
 import ChatMessage from "@/components/ChatMessage";
+import {toast} from "@/components/ui/use-toast";
 
 export type Message = {
   id?: string;
@@ -87,6 +88,12 @@ const Chat = ({id}: { id: string }) => {
       const { success, message } = await askQuestion(id, q);
 
       if (!success) {
+        toast.error({
+          message: `Whoops! Something went wrong: ${message}`,
+          variant: 'destructive',
+          duration: 5000,
+        });
+
         setMessages((prev) =>
           prev.slice(0, prev.length - 1).concat([
             {
