@@ -5,16 +5,26 @@ import {useDropzone} from "react-dropzone";
 import {CheckCircleIcon, CircleArrowDown, HammerIcon, RocketIcon, SaveIcon} from "lucide-react";
 import {useRouter} from "next/navigation";
 import useUpload, {StatusText} from "@/hooks/useUpload";
+import useSubscription from "@/hooks/useSubscription";
+import {useToast} from "@/components/ui/use-toast";
 
 const FileUploader = ({}) => {
   const  { progress, status, fileId, handleUpload } = useUpload();
+  const { hasActiveMembership, filesLoading , isOverFileLimit} = useSubscription();
+  const { toast } = useToast();
   const router = useRouter();
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
     if(file) {
-      await handleUpload(file);
+      if (!isOverFileLimit && !filesLoading) {
+        await handleUpload(file);
+      }
     } else {
-      // nothing huge, just toast
+      toast.error({
+        message: "No file selected",
+        variant: 'destructive',
+        duration: 5000,
+      });
     }
   }, [handleUpload]);
 

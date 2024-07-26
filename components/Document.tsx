@@ -6,6 +6,7 @@ import byteSize from "byte-size";
 import useSubscription from "@/hooks/useSubscription";
 import {Button} from "@/components/ui/button";
 import {DownloadCloud, Trash2Icon} from "lucide-react";
+import {deleteDocument} from "@/actions/deleteDocument";
 
 const Document = ({id, name, size, downloadUrl}: { id: string, name: string, size: number, downloadUrl: string }) => {
   const router = useRouter();
