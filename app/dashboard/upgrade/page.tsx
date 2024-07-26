@@ -6,6 +6,7 @@ import {Button} from "@/components/ui/button";
 import {useUser} from "@clerk/nextjs";
 import {useRouter} from "next/navigation";
 import useSubscription from "@/hooks/useSubscription";
+import getStripe from "@/lib/stripe-js";
 
 export type UserDetails = {
   email: string;
@@ -26,7 +27,12 @@ const PricingPage = ({}) => {
     }
 
     startTransition(async () => {
-      // Load stripe
+      const stripe = await getStripe();
+
+      if(hasActiveMembership) {
+        // create stripe portal session
+
+      }
     });
   }
 

@@ -2,7 +2,7 @@ import {loadStripe, Stripe} from "@stripe/stripe-js";
 
 let stripePromise: Promise<Stripe | null>;
 
-if(!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
+if(!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY === undefined) {
   throw new Error("Stripe publishable key not found");
 }
 const getStripe = (): Promise<Stripe | null> => {
@@ -10,3 +10,5 @@ const getStripe = (): Promise<Stripe | null> => {
     stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
   }
 }
+
+export default getStripe;
