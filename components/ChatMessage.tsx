@@ -14,7 +14,7 @@ const ChatMessage = ({message}: { message: Message }) => {
   return (
     <div className={`chat ${isHuman ? "chat-end" : 'chat-start'}`}>
       <div className={'chat-image avatar'}>
-        <div>
+        <div className={'w-10 rounded-full'}>
           {isHuman ? (
             user?.imageUrl && (
               <Image
