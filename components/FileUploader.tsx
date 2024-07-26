@@ -17,7 +17,7 @@ const FileUploader = ({}) => {
     } else {
       // nothing huge, just toast
     }
-  }, []);
+  }, [handleUpload]);
 
   const statusIcons: {
     [key in StatusText]: JSX.Element
