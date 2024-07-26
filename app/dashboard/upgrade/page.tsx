@@ -8,6 +8,7 @@ import {useRouter} from "next/navigation";
 import useSubscription from "@/hooks/useSubscription";
 import getStripe from "@/lib/stripe-js";
 import {createCheckoutSession} from "@/actions/createCheckoutSession";
+import {createStripePortal} from "@/actions/createStripePortal";
 
 export type UserDetails = {
   email: string;
@@ -32,6 +33,7 @@ const PricingPage = ({}) => {
 
       if(hasActiveMembership) {
         const stripePortalUrl = await createStripePortal();
+        return router.push(stripePortalUrl);
       }
 
       const sessionId = await createCheckoutSession(userDetails);

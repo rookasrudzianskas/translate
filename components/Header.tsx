@@ -3,6 +3,7 @@ import Link from "next/link";
 import {SignedIn, UserButton} from "@clerk/nextjs";
 import {Button} from "@/components/ui/button";
 import {FilePlusIcon} from "lucide-react";
+import UpgradeButton from "@/components/UpgradeButton";
 
 const Header = ({}) => {
   return (
@@ -26,7 +27,7 @@ const Header = ({}) => {
               <FilePlusIcon className={'text-indigo-600'} />
             </Link>
           </Button>
-          {/* Upgrade button */}
+          <UpgradeButton />
           <UserButton />
         </div>
       </SignedIn>
