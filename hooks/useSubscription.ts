@@ -9,7 +9,7 @@ import {db} from "@/firebase";
 const PRO_LIMIT = 20;
 const FREE_LIMIT = 2;
 
-const useSubscription = ({}) => {
+const useSubscription = () => {
   const [hasActiveMembership, setHasActiveMembership] = useState(false);
   const [isOverFileLimit, setIsOverFileLimit] = useState(false);
   const { user } = useUser();
@@ -54,7 +54,6 @@ const useSubscription = ({}) => {
     loading,
     error,
     filesLoading,
-    filesError,
   }
 
 };

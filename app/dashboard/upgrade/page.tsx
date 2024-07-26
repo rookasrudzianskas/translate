@@ -1,16 +1,34 @@
 "use client";
 
-import React from 'react';
+import React, {useTransition} from 'react';
 import {CheckIcon} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {useUser} from "@clerk/nextjs";
 import {useRouter} from "next/navigation";
+import useSubscription from "@/hooks/useSubscription";
+
+export type UserDetails = {
+  email: string;
+  name: string;
+}
 
 const PricingPage = ({}) => {
   const { user } = useUser();
   const router = useRouter();
-  // pull the user subscription plan from the database
+  const {hasActiveMembership, loading} = useSubscription();
+  const [isPending, startTransition] = useTransition();
 
+  const handleUpgrade = () => {
+    if(!user) return;
+    const userDetails: UserDetails = {
+      email: user.primaryEmailAddress?.toString()!,
+      name: user.fullName!,
+    }
+
+    startTransition(async () => {
+      // Load stripe
+    });
+  }
 
   return (
     <div className={'bg-white py-24 sm:py-32'}>
@@ -64,7 +82,12 @@ const PricingPage = ({}) => {
 
             <Button className={'bg-indigo-600 w-full text-white shadow-sm hover:bg-indigo-500 mt-6 block rounded-md' +
               ' px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2' +
-              ' focus-visible:outline-offset-2 focus-visible:outline-indigo-600'}>Upgrade to PRO</Button>
+              ' focus-visible:outline-offset-2 focus-visible:outline-indigo-600'}
+                    disabled={loading || isPending}
+                    onClick={handleUpgrade}
+            >
+              {isPending || loading ? "Loading..." : hasActiveMembership ? "Manage Plan" : "Upgrade to PRO"}
+            </Button>
 
             <ul role={'list'} className={'mt-8 space-y-3 tet-sm leading-6 text-gray-600'}>
               <li className={'flex gap-x-3'}>
