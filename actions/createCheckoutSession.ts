@@ -45,12 +45,13 @@ export async function createCheckoutSession(userDetails: UserDetails) {
       {
         price: 'price_1PgnIDHbxajBDdSkKA4oD9tj',
         quantity: 1,
-      }
+      },
     ],
     mode: 'subscription',
     customer: stripeCustomerId,
     success_url: `${getBaseUrl()}/dashboard?upgrade=true`,
     cancel_url: `${getBaseUrl()}/dashboard?upgrade=false`,
-  })
+  });
 
+  return session.id;
 }
