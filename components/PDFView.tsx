@@ -15,7 +15,7 @@ import {Button} from "@/components/ui/button";
 // run >>> // gsutil cors set cors.json gs://rookas-ai-translation.appspot.com
 // https://firebase.google.com/docs/storage/web/download-files#cors_configuration
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
 
 const PDFView = ({url}: { url: string }) => {
   const [numPages, setNumPages] = useState<number>();
@@ -25,19 +25,18 @@ const PDFView = ({url}: { url: string }) => {
   const [scale, setScale] = useState<number>(1);
 
   useEffect(() => {
-    const fetchFile = async () => {
-      const response = await fetch(url);
-      console.log("THis is response", response);
-      const file = await response.blob();
-      console.log("THis is file", file);
-      setFile(file);
-    }
-    fetchFile();
-  }, [url]);
+		const fetchFile = async () => {
+			const response = await fetch(url)
+			const blob = await response.blob()
+			setFile(blob)
+		}
 
-  const onDocumentLoadSuccess = ({numPages}: { numPages: number }): void => {
-    setNumPages(numPages);
-  }
+		fetchFile()
+	}, [url])
+
+	const onDocumentLoadSuccess = ({ numPages }: { numPages: number }): void => {
+		setNumPages(numPages)
+	}
 
   return (
     <div className={'flex flex-col justify-center items-center'}>
@@ -105,10 +104,9 @@ const PDFView = ({url}: { url: string }) => {
           file={file}
           rotate={rotation}
           onLoadSuccess={onDocumentLoadSuccess}
-          className={'m-4 overflow-scroll'}
-        >
+          className="m-4 overflow-scroll">
           <Page
-            className={'shadow-lg'}
+            className="shadow-lg"
             scale={scale}
             pageNumber={pageNumber}
           />
