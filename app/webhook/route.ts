@@ -1,4 +1,4 @@
-import {NextRequest} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import {headers} from "next/headers";
 import Stripe from "stripe";
 import stripe from "@/lib/stripe";
@@ -57,6 +57,26 @@ export async function POST(req: NextRequest) {
       await adminDb.collection('users').doc(userDetails?.id).update({
         hasActiveMembership: true,
       });
+
+      break;
     }
+    case "customer.subscription.deleted":
+    case "subscription_schedule.canceled": {
+      const subscription = event.data.object as Stripe.Subscription;
+      const customerId = subscription.customer as string;
+      const userDetails = await getUserDetails(customerId);
+      if(!userDetails?.id) {
+        return new Response("User not found", {status: 400});
+      }
+
+      await adminDb.collection('users').doc(userDetails?.id).update({
+        hasActiveMembership: false,
+      });
+      break;
+    }
+
+    default:
+      console.log("Unhandled event type", event.type);
   }
+  return NextResponse("OK", {status: 200});
 }
