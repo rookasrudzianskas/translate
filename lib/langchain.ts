@@ -198,4 +198,10 @@ const generateLangchainCompletion = async (docId: string, question: string) => {
     chat_history: chatHistory,
     input: question,
   });
+
+  console.log('------------');
+  console.log(reply);
+  console.log('------------');
+
+  return reply.answer;
 };
