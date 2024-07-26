@@ -31,7 +31,7 @@ const PricingPage = ({}) => {
       const stripe = await getStripe();
 
       if(hasActiveMembership) {
-        // create stripe portal session
+        const stripePortalUrl = await createStripePortal();
       }
 
       const sessionId = await createCheckoutSession(userDetails);
