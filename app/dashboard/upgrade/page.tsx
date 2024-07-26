@@ -7,6 +7,7 @@ import {useUser} from "@clerk/nextjs";
 import {useRouter} from "next/navigation";
 import useSubscription from "@/hooks/useSubscription";
 import getStripe from "@/lib/stripe-js";
+import {createCheckoutSession} from "@/actions/createCheckoutSession";
 
 export type UserDetails = {
   email: string;
@@ -31,8 +32,13 @@ const PricingPage = ({}) => {
 
       if(hasActiveMembership) {
         // create stripe portal session
-
       }
+
+      const sessionId = await createCheckoutSession(userDetails);
+
+      await stripe?.redirectToCheckout({
+        sessionId: sessionId,
+      });
     });
   }
 
