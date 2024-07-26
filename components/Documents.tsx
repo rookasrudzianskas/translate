@@ -1,7 +1,7 @@
 import React from 'react';
 import PlaceholderDocument from "@/components/PlaceholderDocument";
 import {auth} from "@clerk/nextjs/server";
-import {awaitAllCallbacks} from "@langchain/core/dist/callbacks/promises";
+import { awaitAllCallbacks } from "@langchain/core/callbacks/promises";
 import {adminDb} from "@/firebase-admin";
 import Document from "@/components/Document";
 
